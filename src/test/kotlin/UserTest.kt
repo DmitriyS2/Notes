@@ -36,12 +36,14 @@ class UserTest {
     }
 
     @Test
-    fun get() {
+    fun getListComments() {
+        val comment1 = Comments()
+        //val comment2 = Comments()
         val note1 = Notes()
-        val notes: MutableList<Notes> = mutableListOf()
-        notes.add(note1)
-        val result = ChangeItem.getItem( notes)
-        assertTrue(result)
+        note1.createComment(comment1)
+        val result = note1.getComment()
+        val notes: MutableList<Comments> = mutableListOf(comment1)
+        assertEquals(notes, result)
     }
 
     @Test

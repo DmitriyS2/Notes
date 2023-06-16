@@ -17,9 +17,15 @@ class User(
         return true
     }
 
-
-    fun get() {
-        ChangeItem.getItem(notes)
+    fun get(): MutableList<Notes> {
+        val collectionNotes: MutableList<Notes> = mutableListOf()
+        for (item: Notes in notes) {
+            if (item.isAlive) {
+                collectionNotes.add(item)
+                //println(item.toString())
+            }
+        }
+        return collectionNotes
     }
 
     fun getById(index: Int) {
@@ -51,15 +57,6 @@ object ChangeItem {
         }
         return false
     }
-
-    fun <T : NotesAndComments> getItem(collection: MutableList<T>): Boolean {
-        for (item: T in collection) {
-            if (item.isAlive) {
-                println(item.toString())
-            }
-        }
-        return true
-    }
 }
 
 open class NotesAndComments(
@@ -82,8 +79,17 @@ class Notes(
         return true
     }
 
-    fun getComments() {
-        ChangeItem.getItem(comments)
+    fun getComment(): MutableList<Comments> {
+        val collectionComments: MutableList<Comments> = mutableListOf()
+        if (isAlive) {
+            for (item: Comments in comments) {
+                if (item.isAlive) {
+                    collectionComments.add(item)
+                    //println(item.toString())
+                }
+            }
+        }
+        return collectionComments
     }
 
     fun edit(title: String, text: String): Boolean {
@@ -141,25 +147,25 @@ fun main(args: Array<String>) {
     println(user1)
 
     println(note1.comments)
-    //ChangeItem.addItem(comment1, note1.comments)
+    ChangeItem.addItem(comment1, note1.comments)
     note1.createComment(comment1)
     println(note1.comments)
     println(user1)
 
     note1.createComment(comment2)
     note1.createComment(comment3)
-    note1.getComments()
+    note1.getComment()
     note1.deleteComment(5)
     note1.deleteComment(1)
-    note1.getComments()
+    note1.getComment()
     note1.restoreComment(1)
-    note1.getComments()
+    note1.getComment()
     user1.get()
 
     val note2 = Notes()
     val comment4 = Comments(message = "Bye!")
     note2.createComment(comment4)
-    note2.getComments()
+    note2.getComment()
     user1.add(note2)
     user1.get()
     user1.delete(1)
